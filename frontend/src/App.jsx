@@ -66,7 +66,7 @@ function App() {
 
     // Make real API call to backend
     try {
-      const response = await fetch('https://YOUR-BACKEND-URL.onrender.com/api/investment/analyze', {
+      const response = await fetch('https://investmentgpt.onrender.com/api/investment/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ticker })
