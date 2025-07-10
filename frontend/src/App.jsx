@@ -47,7 +47,6 @@ function App() {
         setAgents(prev => prev.map(agent => 
           agent.id === id ? { ...agent, status: 'active' } : agent
         ))
-        
         // Simulate progress
         const progressInterval = setInterval(() => {
           setAgents(prev => prev.map(agent => {
@@ -65,32 +64,19 @@ function App() {
       }, delay)
     }
 
-    // Complete analysis after all agents finish
-    setTimeout(() => {
-      setAnalysisResults({
-        ticker: ticker.toUpperCase(),
-        price: 156.78,
-        change: '+2.34%',
-        recommendation: 'BUY',
-        confidence: 87,
-        targetPrice: 175.00,
-        riskScore: 'Medium',
-        sentiment: 'Positive',
-        blockchainVerified: true,
-        keyInsights: [
-          'Strong Q3 earnings beat expectations by 12%',
-          'Positive analyst sentiment across 15 major firms',
-          'Technical indicators suggest continued upward momentum',
-          'ESG score improved significantly this quarter'
-        ],
-        riskFactors: [
-          'Market volatility in tech sector',
-          'Regulatory concerns in key markets',
-          'Currency exposure to emerging markets'
-        ]
+    // Make real API call to backend
+    try {
+      const response = await fetch('https://YOUR-BACKEND-URL.onrender.com/api/investment/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ticker })
       })
-      setLoading(false)
-    }, 3500)
+      const data = await response.json()
+      setAnalysisResults(data)
+    } catch (error) {
+      setAnalysisResults({ error: 'Failed to fetch analysis. Please try again.' })
+    }
+    setLoading(false)
   }
 
   const getStatusColor = (status) => {
